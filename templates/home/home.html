@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %}Homepage | Bro!, Sis!{% endblock title %}
+
+{% block content %}
+<div class="container py-4">
+    {% for btn in buttons %}
+        <button class="btn" onclick="window.location.href='{% if user.is_authenticated %}{% url 'increase_counter' btn.pk %}{% endif %}';">
+
+            <h5>{{ btn.name }}</h5>
+            <p>Votes: {{ btn.count }}</p>
+        </button>
+    {% endfor %}
+    {% for message in messages %}
+    <p><a href="{% url 'message' message.pk %}" style="text-decoration: none; color:black">{{ message }}</a></p>
+    {% endfor %}
+
+</div>
+{% endblock content %}

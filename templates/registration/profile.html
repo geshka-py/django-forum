@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}Profile | Bro, Sis!{% endblock title %}
+
+{% block content %}
+
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title">Profile</h4>
+        <form method="post">
+            {% csrf_token %}
+            {% if message %}
+            <div class="alert alert-block alert-success">
+                <ul class="m-0">
+                    <li>{{ message }}</li>
+                </ul>
+            </div>
+            {% endif %}
+            {{ form|crispy }}
+            <button class="btn btn-primary" type="submit">Save changes</button>
+        </form>
+    </div>
+</div>
+
+{% endblock content %}
