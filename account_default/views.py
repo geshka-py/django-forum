@@ -11,12 +11,16 @@ def registration(request):
         form = NewUserForm(request.POST)
         if form.is_valid():
             user = form.save()
-            login(request, user)
-            return redirect("/home")
+            message = 'Your account has been successfully created. Please, login now.'
+            return redirect("signup_res")
         else:
             message = "Form is not valid. Try again."
     form = NewUserForm()
     return render(request, "registration/sign_up.html", context={"registration_form": form, "message": message})
+
+
+def signup_res(request):
+    return render(request, "registration/sign_up_res.html")
 
 
 @login_required

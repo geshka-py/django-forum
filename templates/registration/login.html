@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
+{% load socialaccount %}
 
 {% block title %}Log In | Bro!, Sis!{% endblock title %}
 
@@ -18,12 +19,22 @@
 
                             {{ form|crispy }}
 
-                            <button class="btn btn-primary btn-lg btn-block" type="submit">Login</button>
+                            <button class="btn btn-primary btn-block" type="submit" style="margin-top: 20px">Login</button>
 
                             <hr class="my-4">
 
-                            <button class="btn btn-block btn-outline-info" type="submit"><i class="fab fa-twitter"></i>Login via Twitter</button>
-                            <button class="btn btn-block btn-outline-primary" type="submit"><a href=""><i class="fab fa-facebook-f me-2"></i>Sign in with facebook</a></button>
+                            <button class="btn btn-block btn-outline-danger" type="submit">
+                                <a href='{% provider_login_url "google" %}' style="text-decoration: none; color: #333">
+                                    <i class="fab fa-google"></i>
+                                    Login via Google
+                                </a>
+                            </button>
+                            <button class="btn btn-block btn-outline-dark" type="submit">
+                                <a href='{% provider_login_url "github" method="oauth2" %}' style="text-decoration: none; color: purple">
+                                    <i class="fab fa-github"></i>
+                                    Sign in with GitHub
+                                </a>
+                            </button>
                         </form>
                     </div>
                 </div>

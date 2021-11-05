@@ -7,7 +7,7 @@ from datetime import datetime
 
 def home(request):
     buttons = VoteButton.objects.all()
-    messages = Message.objects.order_by('-pk')[:5]
+    messages = Message.objects.order_by('-pk')[:10]
     return render(request, 'home/home.html', {'buttons': buttons, 'messages': messages})
 
 
