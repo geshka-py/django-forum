@@ -11,7 +11,6 @@ def registration(request):
         form = NewUserForm(request.POST)
         if form.is_valid():
             user = form.save()
-            message = 'Your account has been successfully created. Please, login now.'
             return redirect("signup_res")
         else:
             message = "Form is not valid. Try again."

@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}{{ publication.title }}{% endblock title %}
+
+{% block content %}
+
+<div class="d-flex w-100 justify-content-between">
+    <h3 class="mb-1">{{ publication.title }}</h3>
+    <small class="text-muted">{{ publication.published }}</small>
+</div>
+<p class="mb-1">{{ publication.content }}</p>
+
+<div class="reviews">
+    {% for review in reviews %}
+    <div class="list-group">
+        <a href="#" class="list-group-item list-group-item-action">
+            <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">{{ review.user.username }}: {{ review.rate }}</h5>
+                <small>{{ review.published }}</small>
+            </div>
+            <p class="mb-1">{{ review.comment }}</p>
+        </a>
+    </div>
+    {% endfor %}
+</div>
+
+<form method="post">
+    {% csrf_token %}
+
+    {{ form|crispy }}
+    <button class="btn btn-primary" type="submit">Send</button>
+
+</form>
+
+{% endblock content %}

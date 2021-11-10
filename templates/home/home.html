@@ -4,17 +4,19 @@
 
 {% block content %}
 
-<div class="container py-4 text-center">
-    {% for btn in buttons %}
-        <button class="btn p-5" style="margin: 100px 100px 0; width: 300px;" onclick="window.location.href='{% if user.is_authenticated %}{% url 'increase_counter' btn.pk %}{% endif %}';">
 
-            <h5>{{ btn.name }}</h5>
-            <p>Votes: {{ btn.count }}</p>
-        </button>
+<div class="list-group">
+    {% for publication in publications %}
+    <a href="#" class="list-group-item list-group-item-action">
+        <div class="d-flex w-100 justify-content-between">
+            <h5 class="mb-1">{{ page.title }}</h5>
+            <small class="text-muted">{{ publication.published }}</small>
+        </div>
+        <p class="mb-1">{{ publication.content }}</p>
+        <small class="text-muted">
+            <button class="btn" onclick="document.location.href = 'publication/{{ publication.id }}'"><i class="far fa-thumbs-up" style="font-size: 15px;"></i> {{ page.likes }}</button>
+        </small>
+    </a>
     {% endfor %}
-    {% for message in messages %}
-    <p><a href="{% url 'message' message.pk %}" style="text-decoration: none; color:black">{{ message }}</a></p>
-    {% endfor %}
-
 </div>
 {% endblock content %}
