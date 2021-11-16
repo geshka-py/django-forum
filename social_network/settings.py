@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-dj5##%!-28tbyvk#61rn7)p)fx@8j#uo45qlve3wbm^fciagv9
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["fierce-sierra-76073.herokuapp.com", "127.0.0.1", "localhost"]
+ALLOWED_HOSTS = ["fierce-sierra-76073.herokuapp.com", "127.0.0.1"]
 
 
 # Application definition
@@ -148,9 +148,9 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 STATIC_URL = '/static/'
 
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static')
-]
+# STATICFILES_DIRS = [
+#     os.path.join(BASE_DIR, 'static')
+# ]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
@@ -163,7 +163,7 @@ AUTHENTICATION_BACKENDS = [
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
-SITE_ID = 3
+SITE_ID = 2
 
 
 SOCIALACCOUNT_PROVIDERS = {
