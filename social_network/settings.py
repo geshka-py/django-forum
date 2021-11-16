@@ -54,6 +54,7 @@ THIRD_PARTY_APPS = [
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.github',
+    'ckeditor',
 ]
 
 INSTALLED_APPS = INSTALLED_APPS + SECOND_PARTY_APPS + THIRD_PARTY_APPS
@@ -162,7 +163,7 @@ AUTHENTICATION_BACKENDS = [
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
-SITE_ID = 2
+SITE_ID = 3
 
 
 SOCIALACCOUNT_PROVIDERS = {
@@ -177,3 +178,6 @@ SOCIALACCOUNT_PROVIDERS = {
     },
 }
 LOGIN_REDIRECT_URL = 'home'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')

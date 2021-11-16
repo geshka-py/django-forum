@@ -1,14 +1,20 @@
 from django import forms
-from .models import UserPublicationRelation
+from .models import Publication, Rate, Comment
 
 
-class UserPublicationRelationForm(forms.ModelForm):
+class PublicationForm(forms.ModelForm):
     class Meta:
-        model = UserPublicationRelation
-        fields = ('rate', 'comment')
+        model = Publication
+        fields = ('title', 'description', 'group', 'content')
 
-    def save(self, commit=True):
-        relation = super(UserPublicationRelationForm, self).save(commit=False)
-        if commit:
-            relation.save()
-        return relation
+
+class RateIt(forms.ModelForm):
+    class Meta:
+        model = Rate
+        fields = ('rate',)
+
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ('comment',)

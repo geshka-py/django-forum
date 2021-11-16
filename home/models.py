@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from ckeditor.fields import RichTextField
 
 
 class Group(models.Model):
@@ -9,13 +10,33 @@ class Group(models.Model):
         return self.name
 
 
+class Rate(models.Model):
+    RATE_CHOICES = (
+        (1, 'Very bad'),
+        (2, 'Bad'),
+        (3, 'Not bad'),
+        (4, 'Good'),
+        (5, 'Amazing'),
+    )
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    publication = models.ForeignKey('Publication', on_delete=models.CASCADE)
+    rate = models.SmallIntegerField(choices=RATE_CHOICES, default=0)
+
+    class Meta:
+        unique_together = ('user', 'publication')
+
+    def __str__(self):
+        return f'{self.user.username}: {self.publication.title}, RATE: {self.rate}'
+
+
 class Publication(models.Model):
     title = models.CharField(max_length=256)
     group = models.ForeignKey(Group, on_delete=models.PROTECT)
-    content = models.TextField(null=True, blank=True,)
+    description = models.CharField(max_length=512, null=True)
+    content = RichTextField(null=True, blank=True,)
     author = models.ForeignKey(User, on_delete=models.PROTECT, default='creator', related_name='my_publications')
     published = models.DateTimeField(auto_now_add=True, db_index=True)
-    readers = models.ManyToManyField(User, through='UserPublicationRelation',  related_name='publications')
+    rating = models.FloatField(default=0)
 
     class Meta:
         ordering = ['-published']
@@ -24,24 +45,11 @@ class Publication(models.Model):
         return self.title
 
 
-class UserPublicationRelation(models.Model):
-    RATE_CHOICES = (
-        (1, 'Very bad'),
-        (2, 'Bad'),
-        (3, 'Not bad'),
-        (4, 'Good'),
-        (5, 'Amazing'),
-    )
-
+class Comment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     publication = models.ForeignKey(Publication, on_delete=models.CASCADE)
-    rate = models.PositiveSmallIntegerField(choices=RATE_CHOICES, null=True)
-    comment = models.TextField(max_length=3000, blank=True)
     published = models.DateTimeField(auto_now_add=True, db_index=True)
-    like = models.BooleanField(default=False)
-
-    class Meta:
-        ordering = ['-published']
+    comment = models.TextField(max_length=3000)
 
     def __str__(self):
-        return f'{self.user.username}: {self.publication.title}, RATE: {self.rate}'
+        return f'{self.user.username}: {self.publication.title}, {self.published}'

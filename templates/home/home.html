@@ -4,15 +4,14 @@
 
 {% block content %}
 
-
 <div class="list-group">
     {% for publication in publications %}
-    <a href="#" class="list-group-item list-group-item-action">
+    <a href="{% url 'publication' publication.id %}" class="list-group-item list-group-item-action">
         <div class="d-flex w-100 justify-content-between">
-            <h5 class="mb-1">{{ page.title }}</h5>
+            <h5 class="mb-1">{{ publication.title }}</h5>
             <small class="text-muted">{{ publication.published }}</small>
         </div>
-        <p class="mb-1">{{ publication.content }}</p>
+        <p class="mb-1">{{ publication.description }}</p>
         <small class="text-muted">
             <button class="btn" onclick="document.location.href = 'publication/{{ publication.id }}'"><i class="far fa-thumbs-up" style="font-size: 15px;"></i> {{ page.likes }}</button>
         </small>

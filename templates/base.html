@@ -35,8 +35,13 @@
                     </li>
                     {% endif %}
                 </ul>
+
                 <span class="navbar-text">
-                Vote for bros or for sis's!
+                    {% if user.is_authenticated %}
+                    <a href="{% url 'create_publication' %}">Create publication</a>
+                    {% else %}
+                    Sign in if you want to create a publication
+                    {% endif %}
                 </span>
             </div>
         </div>

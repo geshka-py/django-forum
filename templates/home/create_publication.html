@@ -1,11 +1,14 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
 
-{% block title %}Sign In | Bro, Sis!{% endblock title %}
+{% block title %}Create Publication{% endblock title %}
 
 {% block content %}
+
+<form method="post">
+
 <div class="container py-5">
-    <h1>Sign Up</h1>
+    <h1>Create publication</h1>
     <form method="post">
         {% csrf_token %}
         {% if message %}
@@ -15,10 +18,14 @@
             </ul>
         </div>
         {% endif %}
-        {{ registration_form|crispy }}
-        <button class="btn btn-primary" type="submit">Sign Up</button>
+        {{ form.media }}
+        {{ form|crispy }}
+        <button class="btn btn-primary" type="submit">Create</button>
 
     </form>
 </div>
+
+</form>
+
 {% endblock content %}
 
