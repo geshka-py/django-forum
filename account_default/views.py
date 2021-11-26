@@ -3,6 +3,7 @@ from .forms import NewUserForm, UserEditForm
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from home.models import Publication
 
 
 def registration(request):
@@ -24,6 +25,7 @@ def signup_res(request):
 
 @login_required
 def profile(request):
+    publications = Publication.objects.filter(author=request.user)
     message = ''
     if request.method == "POST":
         form = UserEditForm(request.POST, instance=request.user)
@@ -33,4 +35,13 @@ def profile(request):
     form = UserEditForm()
     form['username'].initial = request.user.username
     form['email'].initial = request.user.email
-    return render(request, 'registration/profile.html', context={'form': form, 'message': message})
+    return render(request, 'registration/profile.html', context={'form': form,
+                                                                 'message': message,
+                                                                 'publications': publications
+                                                                 })
+
+
+def delete_publication(request, pid):
+    publication = Publication.objects.get(id=pid)
+    publication.delete()
+    return render(request, 'home/home.html')

@@ -1,17 +1,20 @@
+from django.db.models import Q
 from django.shortcuts import render, redirect
-from rest_framework.mixins import UpdateModelMixin
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.viewsets import GenericViewSet
+import re
+
 
 from .forms import PublicationForm, RateIt, CommentForm
 
-from .models import Group, Publication, Rate, Comment
+from .models import Group, Publication, Rate, Comment, Tag
 
 
 def home(request):
     publications = Publication.objects.all()
     groups = Group.objects.all()
-    return render(request, 'home/home.html', {'publications': publications, 'groups': groups})
+    tags = Tag.objects.all()
+    return render(request, 'home/home.html', {'publications': publications,
+                                              'groups': groups,
+                                              'tags': tags})
 
 
 def single_publication(request, pid):
@@ -24,14 +27,15 @@ def single_publication(request, pid):
     data['comments'] = comments
     for i in ratings:
         rating += i.rate
-    rating = rating / len(ratings)
+    rating = rating / (len(ratings) or 1)
     data['rating'] = rating
     if request.method == "POST":
-        exists = Rate.objects.get(publication=publication, user=request.user)
         rate_form = RateIt(request.POST)
         if rate_form.is_valid():
-            if exists:
-                exists.delete()
+            try:
+                Rate.objects.get(publication=publication, user=request.user).delete()
+            except Rate.DoesNotExist:
+                pass
             rate_form = rate_form.save(commit=False)
             rate_form.user = request.user
             rate_form.publication = publication
@@ -66,14 +70,31 @@ def create_publication(request):
     return render(request, 'home/create_publication.html', context={'form': form})
 
 
-# class UserPublicationRelationView(UpdateModelMixin, GenericViewSet):
-#     permission_classes = [IsAuthenticated]
-#     queryset = UserPublicationRelation.objects.all()
-#     serializer_class = UserPublicationSerializer
-#     lookup_field = 'publication'
-#
-#     def get_object(self):
-#         obj = UserPublicationRelation.objects.get_or_create(user=self.request.user,
-#                                                             publication_id=self.kwargs['publication'])
-#
-#         return obj
+def tag_search(request, tid):
+    tag = Tag.objects.get(id=tid)
+    publications = Publication.objects.all()
+    tag_publications = []
+    for publication in publications:
+        if tag in publication.tags.all():
+            tag_publications.append(publication)
+    return render(request, 'home/tag_search.html', context={'tag': tag, 'publications': tag_publications})
+
+
+def search(request):
+    if request.method == "POST":
+        searched = request.POST['searched']
+        comments = Comment.objects.filter(comment__contains=searched)
+        publication_list = [i.publication.id for i in comments]
+
+        publications = Publication.objects.filter(Q(title__contains=searched)
+                                                  | Q(content__contains=searched)
+                                                  | Q(id__in=publication_list))
+    return render(request, 'home/search_results.html', context={'publications': publications,
+                                                                'searched': searched})
+
+
+def tag_cloud(request):
+    tags = Tag.objects.all()
+    return render(request, 'home/tag_cloud.html', context={'tags': tags})
+
+

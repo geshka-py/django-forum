@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}Tag cloud{% endblock title %}
+
+{% block content %}
+
+<div class="tag_page">
+    <h1 class="tag_title">Tags</h1>
+    <p class="tag_text">Tag - is a keyword that allows you to categorize a post with other similar posts. Finding the right tags will help others find your post more easily.</p>
+    {% for tag in tags %}
+    <div class="border-bottom">
+        <div class="tag_container">
+            <ul>
+                <li><a href="{% url 'tag_search' tag.id %}">{{ tag.tag_name }}</a></li>
+            </ul>
+            <p>{{ tag.description }}</p>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock content %}

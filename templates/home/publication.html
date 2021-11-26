@@ -5,12 +5,15 @@
 
 {% block content %}
 
-<div class="d-flex w-100 justify-content-between">
+<div class="w-75">
+    <div>
+        <h1>{{ publication.title }}</h1>
+    </div>
+    <p class="mb-1">{{ publication.content|safe }}</p>
     <small class="text-muted">{{ publication.published }}</small>
 </div>
-<p class="mb-1">{{ publication.content|safe }}</p>
 <small>{{ rating }}</small>
-
+{% if user.is_authenticated %}
 <div class="comments">
     {% for comment in comments %}
     <div class="list-group">
@@ -37,5 +40,6 @@
     {{ comment_form|crispy }}
     <button class="btn btn-primary" type="submit">Send</button>
 </form>
+{% endif %}
 
 {% endblock content %}
