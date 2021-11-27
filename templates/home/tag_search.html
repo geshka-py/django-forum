@@ -4,30 +4,7 @@
 {% block title %}{{ tag.tag_name }} | Bro!, Sis!{% endblock title %}
 
 {% block content %}
-{% load static %}
-<link rel="stylesheet" href="{% static 'css/style.css' %}">
 
+{% include 'includes/publication_list.html' %}
 
-<div class="list-group w-75">
-    {% for publication in publications %}
-    <div class="list-group-item list-group-item-action">
-        <div class="d-flex w-100 justify-content-between">
-            <a href="{% url 'publication' publication.id %}" style="text-decoration:none">
-                <h5 class="mb-1" style="color: black">{{ publication.title }}</h5>
-            </a>
-            <small class="text-muted">{{ publication.published }}</small>
-        </div>
-        <small class="text-muted">
-
-        </small>
-        <div class="tagcloud">
-            <ul>
-            {% for tag in publication.tags.all %}
-                <li><a href="{% url 'tag_search' tag.id %}">{{ tag.tag_name }}</a></li>
-            {% endfor %}
-            </ul>
-        </div>
-    </div>
-    {% endfor %}
-</div>
 {% endblock content %}

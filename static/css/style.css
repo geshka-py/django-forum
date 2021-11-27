@@ -133,3 +133,7 @@ div {
     box-sizing: content-box;
     flex-shrink: 0;
 }
+
+.pages {
+    height: auto;
+}

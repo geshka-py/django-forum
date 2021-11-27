@@ -1,6 +1,5 @@
 from django.db.models import Q
 from django.shortcuts import render, redirect
-import re
 
 
 from .forms import PublicationForm, RateIt, CommentForm
@@ -12,49 +11,61 @@ def home(request):
     publications = Publication.objects.all()
     groups = Group.objects.all()
     tags = Tag.objects.all()
-    return render(request, 'home/home.html', {'publications': publications,
-                                              'groups': groups,
-                                              'tags': tags})
+    return render(request, 'home/home.html', context={
+        'publications': publications,
+        'groups': groups,
+        'tags': tags
+    })
 
 
-def single_publication(request, pid):
-    rating = 0
-    data = dict()
-    publication = Publication.objects.get(id=pid)
-    ratings = Rate.objects.filter(publication=publication)
+def single_publication(request, slug):
+    publication = Publication.objects.get(slug=slug)
     comments = Comment.objects.filter(publication=publication)
-    data['publication'] = publication
-    data['comments'] = comments
-    for i in ratings:
-        rating += i.rate
-    rating = rating / (len(ratings) or 1)
-    data['rating'] = rating
-    if request.method == "POST":
-        rate_form = RateIt(request.POST)
-        if rate_form.is_valid():
+    rate_form = rate(request, slug)
+    comment_form = comment(request, slug)
+    if rate_form == 'success' or comment_form == 'success':
+        return redirect(f"/publication/{slug}")
+    return render(request, 'home/publication.html',
+                  context={
+                            'publication': publication,
+                            'comments': comments,
+                            'rate_form': rate_form,
+                            'comment_form': comment_form
+                          })
+
+
+def rate(request, slug):
+    publication = Publication.objects.get(slug=slug)
+    if request.method == 'POST':
+        form = RateIt(request.POST)
+        if form.is_valid():
             try:
                 Rate.objects.get(publication=publication, user=request.user).delete()
             except Rate.DoesNotExist:
                 pass
-            rate_form = rate_form.save(commit=False)
-            rate_form.user = request.user
-            rate_form.publication = publication
-            rate_form.save()
-            data['rate_form'] = rate_form
-            return redirect(f"/publication/{pid}")
-        comment_form = CommentForm(request.POST)
+            form = form.save(commit=False)
+            form.user = request.user
+            form.publication = publication
+            form.save()
+            publication.rating += form.rate / len(Rate.objects.filter(publication=publication))
+            publication.save()
+            return 'success'
+    form = RateIt()
+    return form
 
-        if comment_form.is_valid():
-            comment_form = comment_form.save(commit=False)
-            comment_form.publication = publication
-            comment_form.user = request.user
-            comment_form.save()
-            data['comment_form'] = comment_form
-            return redirect(f"/publication/{pid}")
-    else:
-        data['rate_form'] = RateIt()
-        data['comment_form'] = CommentForm()
-    return render(request, 'home/publication.html', context=data)
+
+def comment(request, slug):
+    publication = Publication.objects.get(slug=slug)
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            form = form.save(commit=False)
+            form.user = request.user
+            form.publication = publication
+            form.save()
+            return 'success'
+    form = CommentForm()
+    return form
 
 
 def create_publication(request):
@@ -64,14 +75,15 @@ def create_publication(request):
             form = form.save(commit=False)
             form.author = request.user
             form.save()
+            form.tags.set(request.POST.get('tags'))
             return redirect('/')
     else:
         form = PublicationForm()
     return render(request, 'home/create_publication.html', context={'form': form})
 
 
-def tag_search(request, tid):
-    tag = Tag.objects.get(id=tid)
+def tag_search(request, slug):
+    tag = Tag.objects.get(slug=slug)
     publications = Publication.objects.all()
     tag_publications = []
     for publication in publications:
@@ -93,8 +105,13 @@ def search(request):
                                                                 'searched': searched})
 
 
-def tag_cloud(request):
+def tags_list(request):
     tags = Tag.objects.all()
-    return render(request, 'home/tag_cloud.html', context={'tags': tags})
+    return render(request, 'blog/tags_list.html', context={'tags': tags})
+
+
+def tag_detail(request, slug):
+    tag = Tag.objects.get(slug__iexact=slug)
+    return render(request, 'blog/tag_detail.html', context={'tag': tag})
 
 

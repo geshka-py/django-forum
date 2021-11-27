@@ -16,4 +16,5 @@ urlpatterns = [
     path('profile', profile, name='profile'),
     path('sign_up_res', signup_res, name='signup_res'),
     path('delete/<int:pid>', delete_publication, name='delete'),
+    path('edit/<int:pid>', edit_publication, name='edit'),
 ]

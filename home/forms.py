@@ -6,7 +6,7 @@ from .models import Publication, Rate, Comment
 class PublicationForm(forms.ModelForm):
     class Meta:
         model = Publication
-        fields = ('title', 'group', 'content', 'tags')
+        exclude = ['author', 'published', 'rating']
 
 
 class RateIt(forms.ModelForm):

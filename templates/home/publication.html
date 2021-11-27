@@ -28,11 +28,13 @@
     {% endfor %}
 </div>
 
+{% if publication.author != user %}
 <form method="post">
     {% csrf_token %}
     {{ rate_form|crispy }}
     <button class="btn btn-primary" type="submit">Rate!</button>
 </form>
+{% endif %}
 <form method="post">
 
     {% csrf_token %}

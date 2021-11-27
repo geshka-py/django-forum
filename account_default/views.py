@@ -1,9 +1,11 @@
+from django.http import HttpResponseNotFound
 from django.shortcuts import render, redirect
 from .forms import NewUserForm, UserEditForm
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from home.models import Publication
+from home.forms import PublicationForm
 
 
 def registration(request):
@@ -11,7 +13,7 @@ def registration(request):
     if request.method == "POST":
         form = NewUserForm(request.POST)
         if form.is_valid():
-            user = form.save()
+            form.save()
             return redirect("signup_res")
         else:
             message = "Form is not valid. Try again."
@@ -42,6 +44,25 @@ def profile(request):
 
 
 def delete_publication(request, pid):
-    publication = Publication.objects.get(id=pid)
-    publication.delete()
-    return render(request, 'home/home.html')
+    try:
+        publication = Publication.objects.get(id=pid)
+        publication.delete()
+        return redirect("/account_default/profile")
+    except Publication.DoesNotExist:
+        return HttpResponseNotFound("<h2>Publication not found</h2>")
+
+
+def edit_publication(request, pid):
+    try:
+        publication = Publication.objects.get(id=pid)
+        if request.method == "POST":
+            publication.title = request.POST.get('title')
+            publication.content = request.POST.get('content')
+            publication.tags.set(request.POST.get('tags'))
+            publication.save()
+            return redirect('/account_default/profile')
+        edit_form = PublicationForm(instance=publication)
+        return render(request, 'home/create_publication.html', context={'form': edit_form,
+                                                                        'publication': publication})
+    except Publication.DoesNotExist:
+        return HttpResponseNotFound("<h2>Publication not found</h2>")
