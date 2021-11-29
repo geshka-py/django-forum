@@ -28,19 +28,24 @@ def signup_res(request):
 @login_required
 def profile(request):
     publications = Publication.objects.filter(author=request.user)
-    message = ''
-    if request.method == "POST":
-        form = UserEditForm(request.POST, instance=request.user)
-        if form.is_valid():
-            form.save(commit=True)
-            message = 'Your profile has been changed'
-    form = UserEditForm()
-    form['username'].initial = request.user.username
-    form['email'].initial = request.user.email
+    form, message = profile_access(request, request.user)
     return render(request, 'registration/profile.html', context={'form': form,
                                                                  'message': message,
                                                                  'publications': publications
                                                                  })
+
+
+def profile_access(request, user):
+    message = ''
+    if request.method == "POST":
+        form = UserEditForm(request.POST, instance=user)
+        if form.is_valid():
+            form.save(commit=True)
+            message = 'Your profile has been changed'
+    form = UserEditForm()
+    form['username'].initial = user.username
+    form['email'].initial = user.email
+    return form, message
 
 
 def delete_publication(request, pid):
@@ -63,6 +68,39 @@ def edit_publication(request, pid):
             return redirect('/account_default/profile')
         edit_form = PublicationForm(instance=publication)
         return render(request, 'home/create_publication.html', context={'form': edit_form,
-                                                                        'publication': publication})
+                                                                        'publication': publication
+                                                                        })
     except Publication.DoesNotExist:
         return HttpResponseNotFound("<h2>Publication not found</h2>")
+
+
+def admin_profile_access(request, uid):
+    user = User.objects.get(id=uid)
+    publications = Publication.objects.filter(author=user)
+    form, message = profile_access(request, user)
+    return render(request, 'registration/admin_profile.html', context={'profile_user': user,
+                                                                       'form': form,
+                                                                       'message': message,
+                                                                       'publications': publications
+                                                                       })
+
+
+def create_user_publication(request, uid):
+    user = User.objects.get(id=uid)
+    if request.method == 'POST':
+        form = PublicationForm(request.POST)
+        if form.is_valid():
+            form = form.save(commit=False)
+            form.author = user
+            form.save()
+            form.tags.set(request.POST.get('tags'))
+            return redirect('/')
+    else:
+        form = PublicationForm()
+    return render(request, 'home/create_publication.html', context={'form': form,
+                                                                    'current_user': user})
+
+
+def users(request):
+    users_list = User.objects.all()
+    return render(request, 'home/user_list.html', context={'users': users_list})

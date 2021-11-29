@@ -50,6 +50,7 @@ class Publication(models.Model):
     published = models.DateTimeField(auto_now_add=True, db_index=True)
     rating = models.FloatField(default=0)
     tags = models.ManyToManyField(Tag, blank=True, related_name='publications')
+    liked = models.IntegerField(default=0)
 
     class Meta:
         ordering = ['-published']
@@ -69,3 +70,9 @@ class Comment(models.Model):
 
     def __str__(self):
         return f'{self.user.username}: {self.publication.title}, {self.published}'
+
+
+class Like(models.Model):
+    value = models.BooleanField(default=False)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    publication = models.ForeignKey(Publication, on_delete=models.CASCADE)

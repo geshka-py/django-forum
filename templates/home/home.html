@@ -5,6 +5,9 @@
 {% block content %}
 {% load static %}
 
+<a href="{% url 'home' '-published' %}"><button type="button" class="btn btn-light">New publications</button></a>
+<a href="{% url 'home' '-liked' %}"><button type="button" class="btn btn-light">Most liked publications</button></a>
+
 {% include 'includes/publication_list.html' %}
 
 {% endblock content %}

@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+{% if user.is_superuser %}
+
+<div class="tag_page">
+    <h1 class="tag_title">Users</h1>
+    <p class="tag_text">You can see a list of users of this site</p>
+    {% for user_i in users %}
+    <div class="border-bottom">
+        <div class="tag_container">
+            <ul>
+                <li><a href="{% url 'admin_profile_access' user_i.id %}">{{ user_i.username }}</a></li>
+            </ul>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+
+{% endif %}
+{% endblock content %}

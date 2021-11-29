@@ -13,14 +13,17 @@
         </div>
         <div class="d-flex">
             <div>
-                {{ publication.rating }}
+                Likes: {{ publication.liked }}
             </div>
             <div class="tagcloud">
                 <ul>
                 {% for tag in publication.tags.all %}
-                    <li><a href="">{{ tag.tag_name }}</a></li>
+                    <li><a href="{% url 'tag_search' tag.slug %}">{{ tag.tag_name }}</a></li>
                 {% endfor %}
                 </ul>
+            </div>
+            <div>
+                Rating: {{ publication.rating }}
             </div>
         </div>
 

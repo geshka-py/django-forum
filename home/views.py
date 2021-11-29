@@ -4,18 +4,33 @@ from django.shortcuts import render, redirect
 
 from .forms import PublicationForm, RateIt, CommentForm
 
-from .models import Group, Publication, Rate, Comment, Tag
+from .models import Group, Publication, Rate, Comment, Tag, Like
 
 
-def home(request):
-    publications = Publication.objects.all()
+def home(request, ordering='-published'):
     groups = Group.objects.all()
     tags = Tag.objects.all()
+    publications = Publication.objects.order_by(ordering)
     return render(request, 'home/home.html', context={
         'publications': publications,
         'groups': groups,
-        'tags': tags
+        'tags': tags,
+        'ordering': ordering
     })
+
+
+def like_it(request, slug):
+    publication = Publication.objects.get(slug=slug)
+    try:
+        like = Like.objects.get(publication=publication, user=request.user)
+        like.delete()
+        publication.liked -= 1
+        publication.save()
+    except Like.DoesNotExist:
+        like = Like.objects.create(publication=publication, user=request.user, value=True)
+        publication.liked += 1
+        publication.save()
+    return redirect(f'/home/publication/{slug}')
 
 
 def single_publication(request, slug):
@@ -40,6 +55,9 @@ def rate(request, slug):
         form = RateIt(request.POST)
         if form.is_valid():
             try:
+
+                publication.rating -= Rate.objects.get(publication=publication, user=request.user).rate / ((len(Rate.objects.filter(publication=publication)) - 1) or 1)
+                publication.save()
                 Rate.objects.get(publication=publication, user=request.user).delete()
             except Rate.DoesNotExist:
                 pass
@@ -47,7 +65,7 @@ def rate(request, slug):
             form.user = request.user
             form.publication = publication
             form.save()
-            publication.rating += form.rate / len(Rate.objects.filter(publication=publication))
+            publication.rating += ((form.rate + 1) / len(Rate.objects.filter(publication=publication)))
             publication.save()
             return 'success'
     form = RateIt()
@@ -84,12 +102,10 @@ def create_publication(request):
 
 def tag_search(request, slug):
     tag = Tag.objects.get(slug=slug)
-    publications = Publication.objects.all()
-    tag_publications = []
-    for publication in publications:
-        if tag in publication.tags.all():
-            tag_publications.append(publication)
-    return render(request, 'home/tag_search.html', context={'tag': tag, 'publications': tag_publications})
+    publications = Publication.objects.filter(tags=tag)
+    return render(request, 'home/tag_search.html', context={'tag': tag,
+                                                            'publications': publications,
+                                                            'searched': tag.tag_name})
 
 
 def search(request):
@@ -113,5 +129,6 @@ def tags_list(request):
 def tag_detail(request, slug):
     tag = Tag.objects.get(slug__iexact=slug)
     return render(request, 'blog/tag_detail.html', context={'tag': tag})
+
 
 

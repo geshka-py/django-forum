@@ -3,6 +3,7 @@
 {% block title %}Profile | Bro, Sis!{% endblock title %}
 
 {% block content %}
+{% if user.is_superuser %}
 
 <div class="card">
     <div class="card-body">
@@ -54,5 +55,9 @@
         </div>
     </div>
 </div>
+{% endif %}
 
 {% endblock content %}
+{% block button %}
+<a href="{% url 'create_user_publication' profile_user.id %}">Create publication for {{ profile_user.username }}</a>
+{% endblock button %}

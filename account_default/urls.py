@@ -17,4 +17,7 @@ urlpatterns = [
     path('sign_up_res', signup_res, name='signup_res'),
     path('delete/<int:pid>', delete_publication, name='delete'),
     path('edit/<int:pid>', edit_publication, name='edit'),
+    path('admin_profile_access/<int:uid>', admin_profile_access, name='admin_profile_access'),
+    path('users_list/', users, name='users_list'),
+    path('create_user_publication/<int:uid>', create_user_publication, name='create_user_publication')
 ]
