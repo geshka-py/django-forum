@@ -1,0 +1,186 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# 
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-12-02 02:17+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n"
+"%100>=11 && n%100<=14)? 2 : 3);\n"
+
+#: .\social_network\settings.py:195
+msgid "English"
+msgstr ""
+
+#: .\social_network\settings.py:196
+msgid "Russian"
+msgstr "Русский"
+
+#: .\social_network\urls.py:32
+msgid "home/"
+msgstr ""
+
+#: .\social_network\urls.py:33
+msgid "account_default/"
+msgstr ""
+
+#: .\social_network\urls.py:34
+msgid "accounts/"
+msgstr ""
+
+#: .\templates\base.html:23
+msgid "MyBlog"
+msgstr "МойБлог"
+
+#: .\templates\base.html:33
+msgid "Search"
+msgstr "Поиск"
+
+#: .\templates\base.html:41
+msgid "Logout"
+msgstr "Выход"
+
+#: .\templates\base.html:43
+msgid "Sign In"
+msgstr "Войти"
+
+#: .\templates\base.html:44 .\templates\registration\sign_up.html:8
+#: .\templates\registration\sign_up.html:19
+msgid "Sign Up"
+msgstr "Регистрация"
+
+#: .\templates\base.html:54
+msgid "Main"
+msgstr "Главная"
+
+#: .\templates\base.html:57 .\templates\home\tag_cloud.html:10
+msgid "Tags"
+msgstr "Теги"
+
+#: .\templates\base.html:61 .\templates\home\user_list.html:10
+msgid "Users"
+msgstr "Пользователи"
+
+#: .\templates\base.html:70 .\templates\home\create_publication.html:13
+msgid "Create publication"
+msgstr "Создать публикацию"
+
+#: .\templates\home\create_publication.html:25
+msgid "Create"
+msgstr "Создать"
+
+#: .\templates\home\home.html:10
+msgid "New publications"
+msgstr "Самые свежие публикации"
+
+#: .\templates\home\home.html:11
+msgid "Most liked publications"
+msgstr "Публикации с наибольшим количеством лайков"
+
+#: .\templates\home\home.html:17
+msgid "Categories"
+msgstr "Категории"
+
+#: .\templates\home\publication.html:15
+msgid "Change"
+msgstr "Изменить"
+
+#: .\templates\home\publication.html:39
+msgid "Rate!"
+msgstr "Оценить!"
+
+#: .\templates\home\publication.html:47
+msgid "Send"
+msgstr "Отправить"
+
+#: .\templates\home\search_results.html:12
+msgid "You forgot to search"
+msgstr "Вы ничего не ввели"
+
+#: .\templates\home\tag_cloud.html:11
+msgid ""
+"Tag - is a keyword that allows you to categorize a post with other similar "
+"posts. Finding the right tags will help others find your post more easily"
+msgstr ""
+"Тег - это ключевое слово которое позволяет упорядочить публикацию с другими "
+"похожими публикациями. Правильно подобранные теги помогу другим найти "
+"публикацию проще"
+
+#: .\templates\home\user_list.html:11
+msgid "You can see a list of users of this site"
+msgstr "Вы можете видеть список пользователей на этом сайте"
+
+#: .\templates\includes\publication_list.html:18
+msgid "Likes"
+msgstr "Лайки"
+
+#: .\templates\includes\publication_list.html:28
+msgid "Rating"
+msgstr "Рейтинг"
+
+#: .\templates\registration\admin_profile.html:10
+#: .\templates\registration\profile.html:10
+msgid "Profile"
+msgstr "Профиль"
+
+#: .\templates\registration\logged_out.html:7
+msgid "You are logged out"
+msgstr "Вы вышли из профиля"
+
+#: .\templates\registration\logged_out.html:8
+msgid "Log in again"
+msgstr "Войти снова"
+
+#: .\templates\registration\login.html:18
+msgid "Sign in"
+msgstr "Войти"
+
+#: .\templates\registration\login.html:25
+msgid "Login"
+msgstr "Войти"
+
+#: .\templates\registration\login.html:32
+msgid "Login via Google"
+msgstr "Войти через Google"
+
+#: .\templates\registration\login.html:38
+msgid "Sign in with GitHub"
+msgstr "Войти через GitHub"
+
+#: .\templates\registration\profile.html:21
+msgid "Save changes"
+msgstr "Сохранить"
+
+#: .\templates\registration\profile.html:23
+msgid "This user has that much likes"
+msgstr "Все публикации этого пользователя собрали столько лайков"
+
+#: .\templates\registration\profile.html:24
+msgid "Your publications"
+msgstr "Твои публикации"
+
+#: .\templates\registration\profile.html:47
+msgid "Delete"
+msgstr "Удалить"
+
+#: .\templates\registration\sign_up_res.html:7
+#, fuzzy
+#| msgid "Your account has been successfully created. Please, <a href="
+msgid "Your account has been successfully created. Please"
+msgstr "Ваш аккаунт создан. Пожалуйста"
+
+#: .\templates\registration\sign_up_res.html:7
+msgid "login now"
+msgstr "войдите"

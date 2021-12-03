@@ -1,12 +1,13 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
 {% block title %}Profile | Bro, Sis!{% endblock title %}
+{% load i18n %}
 
 {% block content %}
 
 <div class="card">
     <div class="card-body">
-        <h4 class="card-title">Profile</h4>
+        <h4 class="card-title">{% translate "Profile" %}</h4>
         <form method="post">
             {% csrf_token %}
             {% if message %}
@@ -17,9 +18,10 @@
             </div>
             {% endif %}
             {{ form|crispy }}
-            <button class="btn btn-primary" type="submit">Save changes</button>
+            <button class="btn btn-primary" type="submit">{% translate "Save changes" %}</button>
         </form>
-        <h2>Your publications</h2>
+        {% translate "This user has that much likes" %}:{{ users_likes }}
+        <h2>{% translate "Your publications" %}</h2>
         <div class="d-flex flex-row">
 
             <div class="pages w-75">
@@ -42,7 +44,7 @@
                     <div class="options">
                         <ul>
                             <li>
-                                <a href="{% url 'delete' publication.id %}">Delete</a>
+                                <a href="{% url 'delete' publication.id %}">{% translate "Delete" %}</a>
                             </li>
 
                         </ul>

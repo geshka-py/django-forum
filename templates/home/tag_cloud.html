@@ -2,11 +2,13 @@
 
 {% block title %}Tag cloud{% endblock title %}
 
+{% load i18n %}
+
 {% block content %}
 
 <div class="tag_page">
-    <h1 class="tag_title">Tags</h1>
-    <p class="tag_text">Tag - is a keyword that allows you to categorize a post with other similar posts. Finding the right tags will help others find your post more easily.</p>
+    <h1 class="tag_title">{% translate "Tags" %}</h1>
+    <p class="tag_text">{% translate "Tag - is a keyword that allows you to categorize a post with other similar posts. Finding the right tags will help others find your post more easily" %}.</p>
     {% for tag in tags %}
     <div class="border-bottom">
         <div class="tag_container">

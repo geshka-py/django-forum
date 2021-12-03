@@ -12,10 +12,10 @@
     <p class="mb-1">{{ publication.content|safe }}</p>
     <small class="text-muted">{{ publication.published }}</small>
     {% if user == publication.author or user.is_superuser %}
-    <a href="{% url 'edit' publication.id %}">Change</a>
+        <a href="{% url 'edit' publication.id %}">Change</a>
     {% endif %}
 </div>
-{% if user != publication.author %}<a href="{% url 'like' publication.slug %}">{% endif %}{{ publication.liked }}</a>
+{% if user != publication.author %}<a href="{% url 'like' publication.id %}">{% endif %}{{ publication.liked }}</a>
 <small>{{ publication.rating }}</small>
 {% if user.is_authenticated %}
 <div class="comments">

@@ -31,6 +31,7 @@ ALLOWED_HOSTS = ["fierce-sierra-76073.herokuapp.com", "127.0.0.1"]
 # Application definition
 
 INSTALLED_APPS = [
+    'modeltranslation',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.sites',
@@ -62,8 +63,9 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
 
     'whitenoise.middleware.WhiteNoiseMiddleware',
-    
+
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -85,9 +87,11 @@ TEMPLATES = [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
+                'django.template.context_processors.i18n',
                 'django.contrib.messages.context_processors.messages',
 
                 'django.template.context_processors.request',
+                'social_network.context_processors.tag'
             ],
         },
     },
@@ -181,3 +185,30 @@ LOGIN_REDIRECT_URL = 'home'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
+from django.utils.translation import gettext
+
+LOCALE_PATHS = (
+    os.path.join(BASE_DIR, 'locale'),
+)
+
+gettext = lambda s: s
+
+LANGUAGES = (
+    ('en', gettext('English')),
+    ('ru', gettext('Russian')),
+)
+
+MULTILINGUAL_LANGUAGES = (
+    "en-us",
+    "ru",
+)
+MODELTRANSLATION_LANGUAGE = ('ru', )
+
+
+CKEDITOR_UPLOAD_PATH = "/home/media/media.lawrence.com/uploads"
+
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+AWS_ACCESS_KEY_ID = 'AKIA52ZLPQREYWDJ6ANL'
+AWS_SECRET_ACCESS_KEY = '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'
+AWS_STORAGE_BUCKET_NAME = 'picturesformydjango'
+AWS_QUERYSTRING_AUTH = False

@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 {% load static %}
 
+{% load i18n %}
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -18,7 +20,7 @@
 <body>
     <div class="navbar navbar-expand-lg navbar-light bg-light mg">
         <div class="container-md">
-            <a class="navbar-brand" href="{% url 'home' %}">MyBlog</a>
+            <a class="navbar-brand" href="{% url 'home' %}">{% trans 'MyBlog' %}</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -28,7 +30,7 @@
                     <div class="input-group w-100 p-3">
                         {% csrf_token %}
                         <span class="input-group-text" id="basic-addon1"><i class="fas fa-search"></i></span>
-                        <input name="searched" type="search" class="form-control" placeholder="Search" aria-label="Search" aria-describedby="basic-addon1" value="{{ searched }}" id="tags">
+                        <input name="searched" type="search" class="form-control" placeholder="{% translate 'Search' %}" aria-label="{% translate 'Search' %}" aria-describedby="basic-addon1" value="{{ searched }}" id="tags">
 <!--                        <button type="submit" class="btn btn-primary">Search</button>-->
                     </div>
                 </form>
@@ -36,34 +38,51 @@
             <nav class="nav">
                 {% if user.is_authenticated %}
                 <a class="nav-link" href="{% url 'profile' %}">{{ user.username }}</a>
-                <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+                <a class="nav-link" href="{% url 'logout' %}">{% translate "Logout" %}</a>
                 {% else %}
-                <a class="nav-link" href="{% url 'login' %}">Sign In</a>
-                <a class="nav-link" href="{% url 'sign_up' %}">Sign Up</a>
+                <a class="nav-link" href="{% url 'login' %}">{% translate "Sign In" %}</a>
+                <a class="nav-link" href="{% url 'sign_up' %}">{% translate "Sign Up" %}</a>
                 {% endif %}
+                <form action="{% url 'set_language' %}" method="POST">{% csrf_token %}
+                    <input type="hidden" name="next" value="{{ next }}">
+                    <select name="language">
+                        {% get_current_language as LANGUAGE_CODE %}
+                        {% get_available_languages as LANGUAGES %}
+                        {% get_language_info_list for LANGUAGES as languages %}
+                        {% for lang in languages %}
+                        <option value="{{ lang.code }}"{% if lang.code == LANGUAGE_CODE %} selected{% endif %}>
+                            {{ lang.name_local }} ({{ lang.code }})
+                        </option>
+                        {% endfor %}
+                    </select>
+                    <input type="submit" value="Select">
+                </form>
+
             </nav>
             </div>
         </div>
 
     </div>
     <nav>
-        <ul class="nav flex-column secondary-nav">
+        <ul class="nav flex-column secondary-nav position-absolute">
             <li class="nav-item">
-                <a class="nav-link" href="{% url 'home' %}">Main</a>
+                <a class="nav-link" href="{% url 'home' %}">{% translate "Main" %}</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{% url 'tags_list' %}">Tags</a>
+                <a class="nav-link" href="{% url 'tags_list' %}">{% translate "Tags" %}</a>
             </li>
+            {% if user.is_superuser %}
             <li class="nav-item">
-                <a class="nav-link" href="{% url 'users_list' %}">Users</a>
+                <a class="nav-link" href="{% url 'users_list' %}">{% translate "Users" %}</a>
             </li>
+            {% endif %}
 
         </ul>
     </nav>
     <div class="create_post">
         <div>
             {% if user.is_authenticated %}
-            {% block button %}<a href="{% url 'create_publication' %}">Create publication</a>{% endblock button %}
+            {% block button %}<a href="{% url 'create_publication' %}"><button type="button" class="btn btn-primary">{% translate "Create publication" %}</button></a>{% endblock button %}
             {% endif %}
         </div>
     </div>

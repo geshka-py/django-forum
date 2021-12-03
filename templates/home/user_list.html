@@ -2,11 +2,13 @@
 
 
 {% block content %}
+{% load i18n %}
+
 {% if user.is_superuser %}
 
 <div class="tag_page">
-    <h1 class="tag_title">Users</h1>
-    <p class="tag_text">You can see a list of users of this site</p>
+    <h1 class="tag_title">{% translate "Users" %}</h1>
+    <p class="tag_text">{% translate "You can see a list of users of this site" %}</p>
     {% for user_i in users %}
     <div class="border-bottom">
         <div class="tag_container">

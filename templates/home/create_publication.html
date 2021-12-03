@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
+{% load i18n %}
+
 
 {% block title %}Create Publication{% endblock title %}
 
@@ -8,7 +10,7 @@
 <form method="post">
 
 <div class="container py-5">
-    <h1>Create publication</h1>
+    <h1>{% translate "Create publication" %}</h1>
     <form method="post">
         {% csrf_token %}
         {% if message %}
@@ -20,7 +22,7 @@
         {% endif %}
         {{ form.media }}
         {{ form|crispy }}
-        <button class="btn btn-primary" type="submit">Create</button>
+        <button class="btn btn-primary" type="submit">{% translate "Create" %}</button>
 
     </form>
 </div>

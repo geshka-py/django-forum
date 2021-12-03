@@ -1,3 +1,5 @@
+import uuid
+
 from django.db import models
 from django.contrib.auth.models import User
 from ckeditor.fields import RichTextField
@@ -6,6 +8,7 @@ from django.shortcuts import reverse
 
 class Group(models.Model):
     name = models.CharField(max_length=128)
+    slug = models.SlugField(max_length=50, unique=True, default=uuid.uuid1)
 
     def __str__(self):
         return self.name
@@ -38,7 +41,7 @@ class Tag(models.Model):
         return reverse('tag_detail_url', kwargs={'slug': self.slug})
 
     def __str__(self):
-        return '{}'.format(self.tag_name)
+        return f'{self.tag_name}'
 
 
 class Publication(models.Model):
@@ -46,11 +49,11 @@ class Publication(models.Model):
     group = models.ForeignKey(Group, on_delete=models.PROTECT)
     content = RichTextField(null=True, blank=True,)
     author = models.ForeignKey(User, on_delete=models.PROTECT, default='creator', related_name='my_publications')
-    slug = models.SlugField(max_length=150, unique=True)
     published = models.DateTimeField(auto_now_add=True, db_index=True)
     rating = models.FloatField(default=0)
     tags = models.ManyToManyField(Tag, blank=True, related_name='publications')
     liked = models.IntegerField(default=0)
+    pictures = models.FileField(upload_to='media/', blank=True)
 
     class Meta:
         ordering = ['-published']

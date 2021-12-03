@@ -4,10 +4,25 @@
 
 {% block content %}
 {% load static %}
+{% load i18n %}
 
-<a href="{% url 'home' '-published' %}"><button type="button" class="btn btn-light">New publications</button></a>
-<a href="{% url 'home' '-liked' %}"><button type="button" class="btn btn-light">Most liked publications</button></a>
 
+<a href="{% url 'home' '-published' %}"><button type="button" class="btn btn-light">{% translate "New publications" %}</button></a>
+<a href="{% url 'home' '-liked' %}"><button type="button" class="btn btn-light">{% translate "Most liked publications" %}</button></a>
+
+<div class="d-flex">
 {% include 'includes/publication_list.html' %}
+
+<div class="categories">
+    <p>{% translate "Categories" %}</p>
+    {% for group in groups %}
+
+    <div class="cat-item">
+        <a href="{% url 'group' group.slug %}"><button type="button" class="btn btn-info">{{ group.name }}</button></a>
+    </div>
+
+    {% endfor %}
+</div>
+</div>
 
 {% endblock content %}

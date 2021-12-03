@@ -1,6 +1,9 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
 {% load socialaccount %}
+{% load i18n %}
+
+
 
 {% block title %}Log In | Bro!, Sis!{% endblock title %}
 
@@ -12,27 +15,27 @@
                 <div class="card shadow-2-strong" style="border-radius: 1rem;">
                     <div class="card-body p-5 text-center">
 
-                        <h3 class="mb-5">Sign in</h3>
+                        <h3 class="mb-5">{% translate "Sign in" %}</h3>
                         <form method="post">
 
                             {% csrf_token %}
 
                             {{ form|crispy }}
 
-                            <button class="btn btn-primary btn-block" type="submit" style="margin-top: 20px">Login</button>
+                            <button class="btn btn-primary btn-block" type="submit" style="margin-top: 20px">{% translate "Login" %}</button>
 
                             <hr class="my-4">
 
                             <button class="btn btn-block btn-outline-danger" type="submit">
                                 <a href='{% provider_login_url "google" %}' style="text-decoration: none; color: #333">
                                     <i class="fab fa-google"></i>
-                                    Login via Google
+                                    {% translate "Login via Google" %}
                                 </a>
                             </button>
                             <button class="btn btn-block btn-outline-dark" type="submit">
                                 <a href='{% provider_login_url "github" method="oauth2" %}' style="text-decoration: none; color: purple">
                                     <i class="fab fa-github"></i>
-                                    Sign in with GitHub
+                                    {% translate "Sign in with GitHub" %}
                                 </a>
                             </button>
                         </form>

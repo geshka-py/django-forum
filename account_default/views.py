@@ -4,7 +4,7 @@ from .forms import NewUserForm, UserEditForm
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from home.models import Publication
+from home.models import Publication, Like
 from home.forms import PublicationForm
 
 
@@ -27,15 +27,17 @@ def signup_res(request):
 
 @login_required
 def profile(request):
-    publications = Publication.objects.filter(author=request.user)
-    form, message = profile_access(request, request.user)
+    form, message, publications = profile_access(request, request.user)
+    users_likes = len(Like.objects.filter(publication__in=publications))
     return render(request, 'registration/profile.html', context={'form': form,
                                                                  'message': message,
-                                                                 'publications': publications
+                                                                 'publications': publications,
+                                                                 'users_likes': users_likes
                                                                  })
 
 
 def profile_access(request, user):
+    publications = Publication.objects.filter(author=user)
     message = ''
     if request.method == "POST":
         form = UserEditForm(request.POST, instance=user)
@@ -45,7 +47,7 @@ def profile_access(request, user):
     form = UserEditForm()
     form['username'].initial = user.username
     form['email'].initial = user.email
-    return form, message
+    return form, message, publications
 
 
 def delete_publication(request, pid):
@@ -76,8 +78,7 @@ def edit_publication(request, pid):
 
 def admin_profile_access(request, uid):
     user = User.objects.get(id=uid)
-    publications = Publication.objects.filter(author=user)
-    form, message = profile_access(request, user)
+    form, message, publications = profile_access(request, user)
     return render(request, 'registration/admin_profile.html', context={'profile_user': user,
                                                                        'form': form,
                                                                        'message': message,
