@@ -54,17 +54,10 @@ div {
     width: 150px;
 }
 
-.create_post div a {
-    border: 1px solid #0074CC;
-    border-radius: 5px;
-    background-color: #0074CC;
-    text-decoration: none;
-    color: white;
-    padding: 5px;
-}
 
 .secondary-nav {
-    position: absolute;
+
+    width: 100px;
     margin-left: 15%;
 }
 
@@ -136,4 +129,14 @@ div {
 
 .pages {
     height: auto;
+}
+
+.dz {
+    border: dashed !important;
+    border-color: #ccc !important;
+    border-radius: 10px !important;
+}
+
+.dz:hover {
+    background-color: aliceblue !important;
 }

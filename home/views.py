@@ -151,3 +151,9 @@ def group_view(request, slug):
         'groups': groups
     })
 
+
+def file_upload_view(request):
+    if request.method == 'POST':
+        file = request.FILES.get('file')
+        Publication.objects.create(upload=file)
+        return

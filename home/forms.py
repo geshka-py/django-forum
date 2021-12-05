@@ -1,9 +1,13 @@
 from django import forms
+from tinymce.widgets import TinyMCE
 
 from .models import Publication, Rate, Comment
 
 
 class PublicationForm(forms.ModelForm):
+    content = forms.CharField(widget=TinyMCE(attrs={'cols':80,
+                                                    'rows': 30}))
+
     class Meta:
         model = Publication
         fields = ('title', 'content', 'group', 'tags',)
@@ -19,5 +23,4 @@ class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
         fields = ('comment',)
-
 

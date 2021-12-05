@@ -54,7 +54,8 @@ THIRD_PARTY_APPS = [
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.github',
-    'ckeditor',
+
+    'tinymce',
 ]
 
 INSTALLED_APPS = INSTALLED_APPS + SECOND_PARTY_APPS + THIRD_PARTY_APPS

@@ -2,8 +2,8 @@ import uuid
 
 from django.db import models
 from django.contrib.auth.models import User
-from ckeditor.fields import RichTextField
 from django.shortcuts import reverse
+from tinymce.models import HTMLField
 
 
 class Group(models.Model):
@@ -47,13 +47,13 @@ class Tag(models.Model):
 class Publication(models.Model):
     title = models.CharField(max_length=256)
     group = models.ForeignKey(Group, on_delete=models.PROTECT)
-    content = RichTextField(null=True, blank=True,)
+    content = HTMLField(null=True, blank=True)
     author = models.ForeignKey(User, on_delete=models.PROTECT, default='creator', related_name='my_publications')
     published = models.DateTimeField(auto_now_add=True, db_index=True)
     rating = models.FloatField(default=0)
     tags = models.ManyToManyField(Tag, blank=True, related_name='publications')
     liked = models.IntegerField(default=0)
-    pictures = models.FileField(upload_to='media/', blank=True)
+    images = models.ImageField(upload_to='media/', blank=True, null=True)
 
     class Meta:
         ordering = ['-published']

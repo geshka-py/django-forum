@@ -6,6 +6,20 @@
 {% block title %}Create Publication{% endblock title %}
 
 {% block content %}
+<script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css" />
+
+
+
+<span id="custom_img_cke" class="cke_toolbar cke_toolbar_last" role="toolbar" style="display:none">
+<span class="cke_toolbar_start"></span><span class="cke_toolgroup" role="presentation">
+<label style="margin:20%;cursor:pointer;" id="cke_c" class="cke_button cke_button__image cke_button_off" href="javascript:void('Image')" title="Image"
+tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_c_label" aria-describedby="cke_c_description" aria-haspopup="false" aria-disabled="false">
+<input type="file" accept="image/jpeg,image/png" onchange="load_image_in_cke(this)" style="display: none; background-color: rgb(235, 235, 235);">
+<span class="cke_button_icon cke_button__image_icon"
+style="background-image:url('/static/ckeditor/ckeditor/plugins/icons.png?t=JB9C');
+background-position:0 -960px;background-size:auto;">&nbsp;</span>
+<span id="cke_c_label" class="cke_button_label cke_button__image_label" aria-hidden="false">Image</span><span id="cke_c_description" class="cke_button_label" aria-hidden="false"></span></label></span><span class="cke_toolbar_end"></span></span>
 
 <form method="post">
 
@@ -26,6 +40,14 @@
 
     </form>
 </div>
+
+</form>
+<h3>Drag 'n drop your images</h3>
+<form action="upload/" method="POST" class="dropzone dz" id="my-dropzone">
+    {% csrf_token %}
+    <div class="fallback">
+        <input type="file" name="file" multiple>
+    </div>
 
 </form>
 

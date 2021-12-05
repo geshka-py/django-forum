@@ -1,7 +1,7 @@
-from ckeditor.widgets import CKEditorWidget
 from django import forms
 from django.contrib import admin
 from modeltranslation.admin import TranslationAdmin
+from tinymce.widgets import TinyMCE
 
 from .models import *
 
@@ -12,8 +12,8 @@ class AdminGroup(TranslationAdmin):
 
 
 class PublicationAdminForm(forms.ModelForm):
-    content_ru = forms.CharField(widget=CKEditorWidget())
-    content_en = forms.CharField(widget=CKEditorWidget())
+    content_ru = forms.CharField(widget=TinyMCE)
+    content_en = forms.CharField(widget=TinyMCE)
 
     class Meta:
         model = Publication
