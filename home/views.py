@@ -1,5 +1,15 @@
+from boto import s3
 from django.db.models import Q
 from django.shortcuts import render, redirect
+import os
+
+from django.conf import settings
+from django.http import JsonResponse
+from django.utils import timezone
+from django.views.decorators.csrf import csrf_exempt
+from boto.s3.connection import S3Connection
+from boto.s3.key import Key
+import social_network.settings
 
 
 from .forms import PublicationForm, RateIt, CommentForm
@@ -93,7 +103,8 @@ def create_publication(request):
             new_publication = form.save(commit=False)
             new_publication.author = request.user
             new_publication.save()
-            new_publication.tags.set(request.POST.get('tags'))
+            if request.POST.get('tags'):
+                new_publication.tags.set(request.POST.get('tags'))
             return redirect('/')
     else:
         form = PublicationForm()
@@ -152,8 +163,25 @@ def group_view(request, slug):
     })
 
 
-def file_upload_view(request):
-    if request.method == 'POST':
-        file = request.FILES.get('file')
-        Publication.objects.create(upload=file)
-        return
+
+
+@csrf_exempt
+def upload_image(request):
+    if request.method == "POST":
+        conn = S3Connection(settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY, host=settings.REGION_HOST)
+        bucket = conn.get_bucket(settings.AWS_STORAGE_BUCKET_NAME)
+        k = Key(bucket)
+        file_obj = request.FILES['file']
+        file_name_suffix = file_obj.name.split(".")[-1]
+        if file_name_suffix not in ["jpg", "png", "gif", "jpeg", ]:
+            return JsonResponse({"message": "Wrong file format"})
+
+        k.set_contents_from_file(file_obj)
+
+        file_url = k.generate_url(file_obj).split("?")[0]
+
+        return JsonResponse({
+            'message': 'Image uploaded successfully',
+            'location': file_url
+        })
+    return JsonResponse({'detail': "Wrong request"})

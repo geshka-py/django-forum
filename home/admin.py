@@ -21,8 +21,15 @@ class PublicationAdminForm(forms.ModelForm):
 
 
 @admin.register(Publication)
-class AdminPublication(TranslationAdmin):
+class AdminPublication(admin.ModelAdmin):
     list_display = ('title', 'group', 'author',)
+
+    class Media:
+        js = [
+            'tinymce/jquery.tinymce.min.js',
+            'tinymce/tinymce.min.js',
+            'tinymce/textareas.js'
+        ]
 
 
 admin.site.register(Tag)

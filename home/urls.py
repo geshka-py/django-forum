@@ -12,5 +12,5 @@ urlpatterns = [
     path('tag_search/<str:slug>', tag_search, name='tag_search'),
     path('like/<int:pid>', like_it, name='like'),
     path('categories/<str:slug>', group_view, name='group'),
-    path('upload/', file_upload_view, name='upload'),
+    path('upload_image/', upload_image, name='upload_image'),
 ]

@@ -5,8 +5,6 @@ from .models import Publication, Rate, Comment
 
 
 class PublicationForm(forms.ModelForm):
-    content = forms.CharField(widget=TinyMCE(attrs={'cols':80,
-                                                    'rows': 30}))
 
     class Meta:
         model = Publication

@@ -13,6 +13,8 @@ import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+import django
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
@@ -25,7 +27,7 @@ SECRET_KEY = 'django-insecure-dj5##%!-28tbyvk#61rn7)p)fx@8j#uo45qlve3wbm^fciagv9
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["fierce-sierra-76073.herokuapp.com", "127.0.0.1"]
+ALLOWED_HOSTS = ["fierce-sierra-76073.herokuapp.com", "127.0.0.1", 'localhost']
 
 
 # Application definition
@@ -147,14 +149,9 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
-
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
 STATIC_URL = '/static/'
-
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
-]
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'), ]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
@@ -186,6 +183,7 @@ LOGIN_REDIRECT_URL = 'home'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
+
 from django.utils.translation import gettext
 
 LOCALE_PATHS = (
@@ -206,10 +204,25 @@ MULTILINGUAL_LANGUAGES = (
 MODELTRANSLATION_LANGUAGE = ('ru', )
 
 
-CKEDITOR_UPLOAD_PATH = "/home/media/media.lawrence.com/uploads"
-
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 AWS_ACCESS_KEY_ID = 'AKIA52ZLPQREYWDJ6ANL'
 AWS_SECRET_ACCESS_KEY = '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'
 AWS_STORAGE_BUCKET_NAME = 'picturesformydjango'
 AWS_QUERYSTRING_AUTH = False
+
+TINYMCE_JS_ROOT = os.path.join(STATIC_ROOT, "tinymce")
+
+TINYMCE_DEFAULT_CONFIG = {
+    "images_upload_url": '/en/upload_image/',
+    "plugins": "advlist autolink lists link image charmap print preview anchor"
+               "searchreplace visualblocks code fullscreen"
+               "insertdatetime media table paste code help wordcount",
+    "menubar": "favs file edit view insert format tools table help",
+    "toolbar": "undo redo | image code" + 'bold italic backcolor | alignleft aligncenter ' +
+    "alignright alignjustify | bullist numlist outdent indent | " + "code image | " +
+    "removeformat | help",
+}
+
+MEDIAFILES_LOCATION = 'media'
+
+REGION_HOST = 's3.eu-west-3.amazonaws.com'
