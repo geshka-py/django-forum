@@ -53,7 +53,6 @@ class Publication(models.Model):
     rating = models.FloatField(default=0)
     tags = models.ManyToManyField(Tag, blank=True, related_name='publications')
     liked = models.IntegerField(default=0)
-    images = models.ImageField(upload_to='media/', blank=True, null=True)
 
     class Meta:
         ordering = ['-published']

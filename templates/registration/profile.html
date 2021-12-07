@@ -5,7 +5,57 @@
 
 {% block content %}
 
-{% user = profile_user %}
-{% include 'includes/profile2.html' %}
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title">{% translate "Profile" %}</h4>
+        <form method="POST">
+            {% csrf_token %}
+<div id="div_id_username" class="control-group d-flex flex-row"> <label for="id_username" class="control-label requiredField">
+                {% translate "Username" %}</label><div class="controls"> <input type="text" name="username" value="{{ user.username }}" maxlength="150" class="textinput textInput" required id="id_username"> <p id="hint_id_username" class="help-block">Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.</p> </div> </div> <div id="div_id_email" class="control-group"> <label for="id_email" class="control-label ">
+                {% translate "Email address" %}
+            </label> <div class="controls"> <input type="email" name="email" value="{{ user.email }}" maxlength="254" class="emailinput" id="id_email"> </div> </div>
+
+            <button class="btn btn-primary" type="submit">{% translate "Save changes" %}</button>
+        </form>
+
+        <p class="display-5">{% translate "This user has that much likes" %}: {% if users_likes %}{{ users_likes }}{% else %}0{% endif %}</p>
+
+        <h2>{% translate "Your publications" %}</h2>
+        <div class="d-flex flex-row">
+            <div class="pages">
+                {% for publication in publications %}
+
+                <div class="list-group-item list-group-item-action">
+
+                    <div class="d-flex">
+                        <a href="{% url 'publication' publication.id %}" style="text-decoration:none">
+                            <h5 class="mb-1" style="color: black">{{ publication.title }}</h5>
+                        </a>
+                        <small class="text-muted">{{ publication.published }}</small>
+                    </div>
+                    <div class="d-flex">
+                        <div>
+                            {{ publication.rating }}
+                        </div>
+
+                    </div>
+
+                    <div class="options">
+                        <ul>
+                            <li>
+                                <a href="{% url 'delete' publication.id %}">{% translate "Delete" %}</a>
+                            </li>
+
+                        </ul>
+                    </div>
+
+                </div>
+                {% endfor %}
+            </div>
+
+        </div>
+    </div>
+
+</div>
 
 {% endblock content %}

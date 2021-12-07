@@ -43,7 +43,8 @@ def single_publication(request, pid):
     rate_form = rate(request, pid)
     comment_form = comment(request, pid)
     try:
-        liked = Like.objects.get(publication=publication, user=request.user)
+        if request.user.is_authenticated:
+            liked = Like.objects.get(publication=publication, user=request.user)
         html_class = 'active'
     except Like.DoesNotExist:
         html_class = ''

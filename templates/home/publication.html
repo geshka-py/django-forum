@@ -10,30 +10,33 @@
         <h1>{{ publication.title }}</h1>
     </div>
     <p class="mb-1">{{ publication.content|safe }}</p>
-    <small class="text-muted">{{ publication.published }}</small>
+    <small class="text-muted">published at {{ publication.published }} by {{ publication.author.username }}</small>
     {% if user == publication.author or user.is_superuser %}
         <a href="{% url 'edit' publication.id %}">Change</a>
     {% endif %}
 </div>
 {% if user.is_authenticated %}
-{% if publication.author != user %}
-<div class="h5">
-    <a href="{% url 'like' publication.id %}" class="{{ class }}" style="color: gray; text-decoration: none;"><i class="fas fa-heart"></i>{{ publication.liked }}</a>
-    <small>Rating: {{ publication.rating }}</small>
-</div>
-<form method="post">
-    {% csrf_token %}
-    {{ rate_form|crispy }}
-    <button class="btn btn-primary" type="submit">Rate!</button>
-</form>
-{% endif %}
-<form method="post">
 
-    {% csrf_token %}
-    {{ comment_form.media }}
-    {{ comment_form|crispy }}
-    <button class="btn btn-primary" type="submit">Send</button>
-</form>
+    <div class="h5">
+        <a href="{% url 'like' publication.id %}" class="{{ class }}" style="color: gray; text-decoration: none;"><i class="fas fa-heart"></i>{{ publication.liked }}</a>
+        <small>Rating: {{ publication.rating }}</small>
+    </div>
+{% if publication.author != user %}
+    <form method="post">
+        {% csrf_token %}
+        {{ rate_form|crispy }}
+        <button class="btn btn-primary" type="submit">Rate!</button>
+    </form>
+{% endif %}
+
+    <form method="post">
+
+        {% csrf_token %}
+        {{ comment_form.media }}
+        {{ comment_form|crispy }}
+        <button class="btn btn-primary" type="submit">Send</button>
+    </form>
+
 {% endif %}
 <div class="container mt-5">
     <div class="row d-flex justify-content-center">
