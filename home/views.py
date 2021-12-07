@@ -1,15 +1,11 @@
-from boto import s3
 from django.db.models import Q
 from django.shortcuts import render, redirect
-import os
 
 from django.conf import settings
 from django.http import JsonResponse
-from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 from boto.s3.connection import S3Connection
 from boto.s3.key import Key
-import social_network.settings
 
 
 from .forms import PublicationForm, RateIt, CommentForm
@@ -19,12 +15,10 @@ from .models import Group, Publication, Rate, Comment, Tag, Like
 
 def home(request, ordering='-published'):
     groups = Group.objects.all()
-    tags = Tag.objects.all()
     publications = Publication.objects.order_by(ordering)
     return render(request, 'home/home.html', context={
         'publications': publications,
         'groups': groups,
-        'tags': tags,
         'ordering': ordering
     })
 
@@ -48,6 +42,11 @@ def single_publication(request, pid):
     comments = Comment.objects.filter(publication=publication)
     rate_form = rate(request, pid)
     comment_form = comment(request, pid)
+    try:
+        liked = Like.objects.get(publication=publication, user=request.user)
+        html_class = 'active'
+    except Like.DoesNotExist:
+        html_class = ''
     if rate_form == 'success' or comment_form == 'success':
         return redirect(f"/publication/{pid}")
     return render(request, 'home/publication.html',
@@ -55,7 +54,8 @@ def single_publication(request, pid):
                             'publication': publication,
                             'comments': comments,
                             'rate_form': rate_form,
-                            'comment_form': comment_form
+                            'comment_form': comment_form,
+                            'class': html_class
                           })
 
 
@@ -65,9 +65,6 @@ def rate(request, pid):
         form = RateIt(request.POST)
         if form.is_valid():
             try:
-
-                publication.rating -= Rate.objects.get(publication=publication, user=request.user).rate / ((len(Rate.objects.filter(publication=publication)) - 1) or 1)
-                publication.save()
                 Rate.objects.get(publication=publication, user=request.user).delete()
             except Rate.DoesNotExist:
                 pass
@@ -75,7 +72,10 @@ def rate(request, pid):
             form.user = request.user
             form.publication = publication
             form.save()
-            publication.rating += ((form.rate + 1) / len(Rate.objects.filter(publication=publication)))
+            publication.rating = 0
+            for i in Rate.objects.filter(publication=publication):
+                publication.rating += i.rate
+            publication.rating = publication.rating / len(Rate.objects.filter(publication=publication))
             publication.save()
             return 'success'
     form = RateIt()
@@ -161,8 +161,6 @@ def group_view(request, slug):
         'publications': publications,
         'groups': groups
     })
-
-
 
 
 @csrf_exempt

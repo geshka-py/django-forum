@@ -13,9 +13,9 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.js"></script>
     <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/ui-lightness/jquery-ui.css" rel="stylesheet" type="text/css" />
 
-<script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
-    <script src="../staticfiles/tinymce/textareas.js"></script>
-    <script src="https://kit.fontawesome.com/c9f84ec0bf.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+        <script src="../staticfiles/tinymce/textareas.js"></script>
+        <script src="https://kit.fontawesome.com/c9f84ec0bf.js" crossorigin="anonymous"></script>
 
     <title>{% block title %}{% endblock title %}</title>
 </head>
@@ -23,16 +23,14 @@
     <div class="navbar navbar-expand-lg navbar-light bg-light mg">
         <div class="container-md">
             <a class="navbar-brand" href="{% url 'home' %}">{% trans 'MyBlog' %}</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+            
             <div class="collapse navbar-collapse" id="navbarText">
 
-                <form class="container-fluid justify-content-center w-75" method="post" action="{% url 'search' %}">
+                <form class="container-fluid justify-content-center w-75" method="POST" action="{% url 'search' %}">
+                    {% csrf_token %}
                     <div class="input-group w-100 p-3">
-                        {% csrf_token %}
                         <span class="input-group-text" id="basic-addon1"><i class="fas fa-search"></i></span>
-                        <input name="searched" type="search" class="form-control" placeholder="{% translate 'Search' %}" aria-label="{% translate 'Search' %}" aria-describedby="basic-addon1" value="{{ searched }}" id="tags">
+                        <input class="search-field" name="searched" type="search" class="form-control" placeholder="Search" aria-label="Search" aria-describedby="basic-addon1" value="" id="tags">
 <!--                        <button type="submit" class="btn btn-primary">Search</button>-->
                     </div>
                 </form>
@@ -57,7 +55,7 @@
                         </option>
                         {% endfor %}
                     </select>
-                    <input type="submit" value="Select">
+                    <button type="submit" class="btn btn-primary mb-2" value="Select">Submit</button>
                 </form>
 
             </nav>
@@ -65,22 +63,25 @@
         </div>
 
     </div>
-    <nav>
-        <ul class="nav flex-column secondary-nav position-absolute">
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'home' %}">{% translate "Main" %}</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'tags_list' %}">{% translate "Tags" %}</a>
-            </li>
-            {% if user.is_superuser %}
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'users_list' %}">{% translate "Users" %}</a>
-            </li>
-            {% endif %}
+    <div class="nav flex-column secondary-nav position-absolute">
+        <nav>
+            <ul class="list-unstyled">
 
-        </ul>
-    </nav>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'home' %}">{% translate "Main" %}</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'tags_list' %}">{% translate "Tags" %}</a>
+                </li>
+                {% if user.is_superuser %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'users_list' %}">{% translate "Users" %}</a>
+                </li>
+                {% endif %}
+
+            </ul>
+        </nav>
+    
     <div class="create_post">
         <div>
             {% if user.is_authenticated %}
@@ -88,10 +89,11 @@
             {% endif %}
         </div>
     </div>
+    </div>
 
 
 
-    <div class="container border-start w-50">
+    <div class="container border-start">
         {% block content %}{% endblock content %}
     </div>
 

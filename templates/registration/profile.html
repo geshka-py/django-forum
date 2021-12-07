@@ -5,56 +5,7 @@
 
 {% block content %}
 
-<div class="card">
-    <div class="card-body">
-        <h4 class="card-title">{% translate "Profile" %}</h4>
-        <form method="post">
-            {% csrf_token %}
-            {% if message %}
-            <div class="alert alert-block alert-success">
-                <ul class="m-0">
-                    <li>{{ message }}</li>
-                </ul>
-            </div>
-            {% endif %}
-            {{ form|crispy }}
-            <button class="btn btn-primary" type="submit">{% translate "Save changes" %}</button>
-        </form>
-        {% translate "This user has that much likes" %}:{{ users_likes }}
-        <h2>{% translate "Your publications" %}</h2>
-        <div class="d-flex flex-row">
-
-            <div class="pages w-75">
-                {% for publication in publications %}
-                <div class="list-group-item list-group-item-action">
-
-                    <div class="d-flex w-100 justify-content-between">
-                        <a href="{% url 'publication' publication.id %}" style="text-decoration:none">
-                            <h5 class="mb-1" style="color: black">{{ publication.title }}</h5>
-                        </a>
-                        <small class="text-muted">{{ publication.published }}</small>
-                    </div>
-                    <div class="d-flex">
-                        <div>
-                            {{ publication.rating }}
-                        </div>
-
-                    </div>
-
-                    <div class="options">
-                        <ul>
-                            <li>
-                                <a href="{% url 'delete' publication.id %}">{% translate "Delete" %}</a>
-                            </li>
-
-                        </ul>
-                    </div>
-
-                </div>
-            </div>
-            {% endfor %}
-        </div>
-    </div>
-</div>
+{% user = profile_user %}
+{% include 'includes/profile2.html' %}
 
 {% endblock content %}

@@ -13,7 +13,7 @@
     <div class="border-bottom">
         <div class="tag_container">
             <ul>
-                <li><a href="{% url 'tag_search' tag.id %}">{{ tag.tag_name }}</a></li>
+                <li><a href="{% url 'tag_search' tag.slug %}">{{ tag.tag_name }}</a></li>
             </ul>
             <p>{{ tag.description }}</p>
         </div>

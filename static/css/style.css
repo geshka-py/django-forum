@@ -1,6 +1,76 @@
-div {
-    margin: 0;
-    padding: 0;
+*{
+	margin: 5px;
+	text-decoration: none;
+
+}
+.categories{
+	margin: 5px;
+}
+
+.cat-item{
+	padding: 10px;
+}
+
+.cat-p{
+	align-self: center;
+}
+
+/*.text-muted{
+	position: relative;
+	left: 70%;
+}*/
+
+.active {
+    text-decoration: none;
+    color: blue !important;
+}
+
+.title-box{
+	border: 1px grey solid;
+	padding: 5px;
+	margin: 15px 5px;
+	height: 55px;
+	widows: 15px;
+	border-radius: 15%;
+}
+
+.p-center{
+	height: 5px;
+	padding: 5px 15px;
+}
+
+.tag{
+	flex-direction: column;
+	width: 100%;
+}
+.create_post{
+	position: relative;
+}
+
+.border-start{
+	width: 75%;
+}
+
+.search-field{
+	height: 3rem;
+	width: 90%;
+}
+
+.display-5{
+	text-align: right;
+}
+
+.list-group-item {
+	flex-basis: 25%;
+	width: 50em;
+}
+
+.navbar{
+	height: 100px;
+}
+
+.nav-form{
+	display: inline-flex;
 }
 
 .tagcloud{
@@ -42,28 +112,7 @@ div {
 	color: #fff;
 }
 
-.create_post {
-    position: absolute;
-    width: 90%;
-    margin-top: 20px;
-}
 
-.create_post div {
-    display: block;
-    margin-left: 92%;
-    width: 150px;
-}
-
-
-.secondary-nav {
-
-    width: 100px;
-    margin-left: 15%;
-}
-
-.mg {
-    margin-bottom: 20px;
-}
 
 .tag_container {
     padding: 15px;
@@ -106,37 +155,5 @@ div {
 	color: #fff;
 }
 
-.publication-list-item {
-    display: flex;
-    overflow: hidden;
-    height: auto;
-    text-align: left
-    padding: 12px 8px 12px 8px;
-    border: 1px solid grey;
-    border-radius: 5px;
-}
 
-.publication-rating {
-    float: none;
-    display: flex;
-    flex-wrap: nowrap;
-    align-items: flex-start;
-    margin-right: 0;
-    padding: 0 8px 0 0;
-    box-sizing: content-box;
-    flex-shrink: 0;
-}
 
-.pages {
-    height: auto;
-}
-
-.dz {
-    border: dashed !important;
-    border-color: #ccc !important;
-    border-radius: 10px !important;
-}
-
-.dz:hover {
-    background-color: aliceblue !important;
-}
